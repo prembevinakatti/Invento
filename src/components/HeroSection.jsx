@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Marquee } from "./ui/marquee";
+import Spline from "@splinetool/react-spline";
 import Navbar from "./Navbar";
 
 const logos = [
@@ -69,45 +70,54 @@ const HeroSection = () => {
         </div>
 
         {/* Right Illustration/Visual Area (Placeholder for 3D and Testimonials) */}
-        <div className="hidden lg:flex lg:w-[55%] h-full items-center justify-end relative">
-          {/* Placeholder for the custom 3D illustration (The glowing machine) */}
-          {/* The exact glow and object require an embedded 3D component (e.g., Spline) */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            {/* Glowing Effect - Green/Red */}
-            <div className="w-96 h-96 bg-gradient-to-br from-green-500/50 via-green-800/20 to-red-800/20 rounded-full blur-3xl opacity-40"></div>
-
-            {/* Visual Placeholder for the object (A dark, reflective shape) */}
+        <div className="hidden lg:flex flex-col lg:w-[55%] h-full items-center justify-end relative">
+          {/* Spline 3D Model Below Testimonials */}
+          <div className=" w-[650px] bg-500">
+            <div className=" relative top-20 w- h-[500px] z-10">
+              <Spline clas scene="https://prod.spline.design/CkPIBpfhM8SqxI0k/scene.splinecode" />
+            </div>
           </div>
+          <div>
+            {/* The exact glow and object require an embedded 3D component (e.g., Spline) */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              {/* Glowing Effect - Green/Red */}
+              <div className="w-96 h-96 bg-gradient-to-br from-green-500/50 via-green-800/20 to-red-800/20 rounded-full blur-3xl opacity-40"></div>
 
-          {/* Testimonial 1 - Top Right */}
-          <div className="absolute top-[28%] w-1/2 right-[-5%] transform rotate-[15deg] z-20">
+              {/* Visual Placeholder for the object (A dark, reflective shape) */}
+            </div>
+            {/* Testimonial 1 - Top Right */}
+            <div className="absolute top-[18%] w-1/2 right-[-5%] transform rotate-[15deg] z-20">
+              <motion.div
+                initial={{ opacity: 0, x: -50, rotate: -10 }}
+                animate={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ delay: 1.5, duration: 1 }}
+                className="p-4 bg-neutral-900/80 border border-neutral-700 rounded-md max-w-[280px] backdrop-blur-sm shadow-xl"
+              >
+                <p className="text-base  leading-snug">
+                  “The valuation report was crucial for our funding.”
+                </p>
+                <p className="text-sm text-right mt-2 text-neutral-500">
+                  - name
+                </p>
+              </motion.div>
+            </div>
+            {/* Testimonial 2 - Middle Right */}
             <motion.div
-              initial={{ opacity: 0, x: -50, rotate: -10 }}
+              initial={{ opacity: 0, x: 50, rotate: 10 }}
               animate={{ opacity: 1, x: 0, rotate: 0 }}
               transition={{ delay: 1.5, duration: 1 }}
-              className="p-4 bg-neutral-900/80 border border-neutral-700 rounded-md max-w-[280px] backdrop-blur-sm shadow-xl"
+              className="absolute top-[18%] w-1/2 right-[55%] transform rotate-[-15deg] z-20"
             >
-              <p className="text-base  leading-snug">
-                “The valuation report was crucial for our funding.”
-              </p>
-              <p className="text-sm text-right mt-2 text-neutral-500">- name</p>
+              <div className="p-4 bg-neutral-900/80 border border-neutral-700 rounded-md max-w-[280px] backdrop-blur-sm shadow-xl">
+                <p className="text-base leading-snug">
+                  “Their guidance helped us unlock key government subsidies.”
+                </p>
+                <p className="text-sm text-right mt-2 text-neutral-500">
+                  - name
+                </p>
+              </div>
             </motion.div>
           </div>
-
-          {/* Testimonial 2 - Middle Right */}
-          <motion.div
-            initial={{ opacity: 0, x: 50, rotate: 10 }}
-            animate={{ opacity: 1, x: 0, rotate: 0 }}
-            transition={{ delay: 1.5, duration: 1 }}
-            className="absolute top-[25%] w-1/2 right-[55%] transform rotate-[-15deg] z-20"
-          >
-            <div className="p-4 bg-neutral-900/80 border border-neutral-700 rounded-md max-w-[280px] backdrop-blur-sm shadow-xl">
-              <p className="text-base leading-snug">
-                “Their guidance helped us unlock key government subsidies.”
-              </p>
-              <p className="text-sm text-right mt-2 text-neutral-500">- name</p>
-            </div>
-          </motion.div>
         </div>
       </div>
 

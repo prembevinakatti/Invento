@@ -242,6 +242,7 @@ const ContactPage = () => {
               <p className="text-center text-sm text-gray-500 mt-3">
                 (We will reach out to you within 48hrs)
               </p>
+              
             </div>
           </form>
         </div>

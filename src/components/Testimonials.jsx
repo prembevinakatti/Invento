@@ -102,7 +102,7 @@ const Testimonials = () => {
 
       {/* Main Heading and Subtext */}
       <div className="w-full text-left ml-36 sm:text-start mb-16">
-        <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight">
+        <h2 className="text-4xl sm:text-4xl font-extrabold mb-4 tracking-tight">
           What Our Clients Say About INNOVENT
         </h2>
         <p className="text-xl text-zinc-400">

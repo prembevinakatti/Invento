@@ -106,7 +106,7 @@ const Testimonials = () => {
           What Our Clients Say About INNOVENT
         </h2>
         <p className="text-xl text-zinc-400">
-          Real businesses, real growth — powered by strategic financial and
+          Real businesses, real growth — powered by strategic financial and <br />
           compliance solutions.
         </p>
       </div>

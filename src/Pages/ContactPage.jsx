@@ -68,8 +68,9 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans antialiased relative overflow-hidden">
-      <Navbar />
-
+      <div className="relative z-50">
+        <Navbar />
+      </div>
       {/* Background Glow */}
       <div
         className="absolute inset-0 z-0 opacity-25 pointer-events-none will-change-transform"
@@ -79,7 +80,6 @@ const ContactPage = () => {
           transform: "translateZ(0)",
         }}
       />
-
       {/* Main Content */}
       <LazyMotion features={domAnimation}>
         <motion.div
@@ -90,7 +90,10 @@ const ContactPage = () => {
           onAnimationComplete={() => setShowSpline(true)} // ✅ Show Spline after all animations
         >
           {/* Left Column */}
-          <motion.div className="lg:w-1/2 flex flex-col justify-start space-y-8" variants={fadeUp}>
+          <motion.div
+            className="lg:w-1/2 flex flex-col justify-start space-y-8"
+            variants={fadeUp}
+          >
             <motion.h1
               className="text-5xl sm:text-4xl font-semibold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white/50 to-white/20"
               variants={fadeUp}
@@ -102,7 +105,10 @@ const ContactPage = () => {
             </motion.h1>
 
             {/* Stats */}
-            <motion.div className="flex flex-row gap-4 mb-8 mt-4 flex-wrap" variants={containerVariants}>
+            <motion.div
+              className="flex flex-row gap-4 mb-8 mt-4 flex-wrap"
+              variants={containerVariants}
+            >
               {stats.map((stat, i) => (
                 <motion.div key={i} variants={fadeUp}>
                   <StatCard {...stat} />
@@ -122,9 +128,14 @@ const ContactPage = () => {
             variants={fadeUp}
           >
             <form className="space-y-6">
-              <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6" variants={containerVariants}>
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                variants={containerVariants}
+              >
                 <motion.div variants={fadeUp}>
-                  <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">NAME</label>
+                  <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
+                    NAME
+                  </label>
                   <input
                     type="text"
                     placeholder="Your Name"
@@ -132,14 +143,19 @@ const ContactPage = () => {
                   />
                 </motion.div>
                 <motion.div variants={fadeUp}>
-                  <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">EMAIL</label>
+                  <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
+                    EMAIL
+                  </label>
                   <div className="relative">
                     <input
                       type="email"
                       placeholder="Your Email"
                       className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 pr-10 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
                     />
-                    <Mail size={20} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400" />
+                    <Mail
+                      size={20}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400"
+                    />
                   </div>
                 </motion.div>
               </motion.div>
@@ -156,20 +172,32 @@ const ContactPage = () => {
               </motion.div>
 
               <motion.div variants={fadeUp}>
-                <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">BUDGET</label>
+                <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
+                  BUDGET
+                </label>
                 <select
                   defaultValue=""
                   className="w-full bg-[#111111] border border-gray-800/40 text-gray-400 rounded-lg p-3 appearance-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
                 >
-                  <option value="" disabled hidden>Select Budget...</option>
-                  <option value="1" className="text-white">$1k - $5k</option>
-                  <option value="2" className="text-white">$5k - $25k</option>
-                  <option value="3" className="text-white">$25k+</option>
+                  <option value="" disabled hidden>
+                    Select Budget...
+                  </option>
+                  <option value="1" className="text-white">
+                    $1k - $5k
+                  </option>
+                  <option value="2" className="text-white">
+                    $5k - $25k
+                  </option>
+                  <option value="3" className="text-white">
+                    $25k+
+                  </option>
                 </select>
               </motion.div>
 
               <motion.div variants={fadeUp}>
-                <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">MESSAGE</label>
+                <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
+                  MESSAGE
+                </label>
                 <textarea
                   placeholder="Your Message"
                   rows="5"
@@ -179,24 +207,24 @@ const ContactPage = () => {
 
               <motion.div className="pt-2" variants={fadeUp}>
                 <SubmitButton />
-                <p className="text-center text-sm text-gray-500 mt-3">(We will reach out to you within 48hrs)</p>
+                <p className="text-center text-sm text-gray-500 mt-3">
+                  (We will reach out to you within 48hrs)
+                </p>
               </motion.div>
             </form>
           </motion.div>
         </motion.div>
       </LazyMotion>
 
-      {/* ✅ Spline Background after all animations */}
+      {/* Spline Background */}
       {showSpline && (
-        <div className="absolute w-full h-full bottom-56 left-0 z-0 flex items-center justify-center pointer-events-none opacity-30">
-          <div className="w-[600px] h-[600px]">
-            <Suspense fallback={null}>
-              <Spline
-                scene="https://prod.spline.design/P0iJMYCbFwHDMHfc/scene.splinecode"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </Suspense>
-          </div>
+        <div className="absolute bottom-72 inset-0 z-0 flex items-center justify-center pointer-events-none opacity-30">
+          <Suspense fallback={null}>
+            <Spline
+              scene="https://prod.spline.design/P0iJMYCbFwHDMHfc/scene.splinecode"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </Suspense>
         </div>
       )}
 

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   return (
-    <div className=" w-screen  z-50 flex items-center justify-center">
+    <div className=" w-screen z-50 flex items-center justify-center">
       <div className="w-4/5 bg-[#050505] text-white flex items-center justify-between p-3 px-7 border absolute top-6 rounded-md border-gray-800 shadow-2xl">
         <h1 className="text-2xl">INVENTO</h1>
         <div>

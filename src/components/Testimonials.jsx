@@ -11,7 +11,7 @@ const testimonials = [
     name: "Aarav Mehta",
     title: "Founder, FinEdge Capital",
     // Placeholder image
-    image: "https://placehold.co/100x100/171717/FFFFFF?text=A", 
+    image: "https://placehold.co/100x100/171717/FFFFFF?text=A",
   },
   {
     id: 2,
@@ -56,29 +56,28 @@ const StarRating = ({ count }) => (
 
 // ⭐ Individual Testimonial Card
 const TestimonialCard = ({ data }) => {
-  
   // Custom style for the card to match the exact corner radius and color
   return (
     <div
       className="bg-[#121212] p-8 rounded-[1rem] border border-zinc-800/80 w-full transition duration-300"
       // Added subtle shadow for depth, matching the design aesthetic
-      style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.2), 0 0 10px rgba(10,10,10,0.1)' }}
+      style={{
+        boxShadow: "0 4px 15px rgba(0,0,0,0.2), 0 0 10px rgba(10,10,10,0.1)",
+      }}
     >
       <StarRating count={data.rating} />
-      
+
       {/* Quote text styling is adjusted for the exact font size and line height */}
-      <p className="text-lg text-white mb-6 leading-normal">
-        "{data.quote}"
-      </p>
-      
+      <p className="text-lg text-white mb-6 leading-normal">"{data.quote}"</p>
+
       <div className="flex items-center space-x-4">
         {/* Client Image/Avatar */}
-        <img 
+        <img
           src={data.image}
           alt={data.name}
           className="w-10 h-10 rounded-full object-cover bg-zinc-700 border border-zinc-600"
         />
-        
+
         {/* Client Name and Title */}
         <div>
           <p className="text-white font-semibold text-base">{data.name}</p>
@@ -94,25 +93,21 @@ const Testimonials = () => {
   return (
     // Background color changed to a deeper black, matching the screenshot
     <section className="bg-[#050505] text-white py-24 px-4 sm:px-8 lg:px-16 relative overflow-hidden flex flex-col items-center">
-      
       {/* Badge/Pill (Matching the style from the screenshot's header) */}
       <div className="flex justify-center mb-5">
-        <button
-          className="text-sm font-semibold tracking-wider px-3 py-1 mb-10 border border-zinc-700 bg-[#0a0a0a] text-white/70 rounded-md"
-        >
+        <button className="text-sm font-semibold tracking-wider px-3 py-1 mb-10 border border-zinc-700 bg-[#0a0a0a] text-white/70 rounded-md">
           Testimonials
         </button>
       </div>
 
       {/* Main Heading and Subtext */}
-      <div
-        className="max-w-4xl text-left sm:text-center mb-16 w-full"
-      >
+      <div className="w-full text-left ml-36 sm:text-start mb-16">
         <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight">
           What Our Clients Say About INNOVENT
         </h2>
         <p className="text-xl text-zinc-400">
-          Real businesses, real growth — powered by strategic financial and compliance solutions.
+          Real businesses, real growth — powered by strategic financial and
+          compliance solutions.
         </p>
       </div>
 
@@ -122,7 +117,6 @@ const Testimonials = () => {
           <TestimonialCard key={testimonial.id} data={testimonial} />
         ))}
       </div>
-      
     </section>
   );
 };

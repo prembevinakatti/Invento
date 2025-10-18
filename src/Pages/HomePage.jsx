@@ -15,7 +15,7 @@ const HomePage = () => {
   const testimonialsRef = useRef(null); // animation ends here
 
   return (
-    <div className="relative w-screen bg-black text-white overflow-hidden">
+    <div className="relative w-screen z-10 bg-black text-white overflow-hidden">
       {/* Coin animation behind content */}
       <ScrollImageSequence startRef={chooseRef} endRef={testimonialsRef} />
 

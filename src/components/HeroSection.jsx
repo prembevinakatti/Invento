@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 // Lazy load Spline only on client side
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
+// Logos for marquee
 const logos = [
   "https://i.pinimg.com/736x/3e/c5/20/3ec520c220995b50248d5cf0239ef146.jpg",
   "https://i.pinimg.com/736x/3e/c5/20/3ec520c220995b50248d5cf0239ef146.jpg",
@@ -13,19 +14,60 @@ const logos = [
   "https://i.pinimg.com/736x/3e/c5/20/3ec520c220995b50248d5cf0239ef146.jpg",
 ];
 
+// Generate initial stars
+const generateStars = (count = 50) =>
+  Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: Math.random() * 3 + 1, // 1px to 3px
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    driftX: (Math.random() - 0.5) * 50, // ±50% horizontal drift
+    driftY: (Math.random() - 0.5) * 50, // ±50% vertical drift
+    duration: 120 + Math.random() * 60, // 120–180s
+    delay: Math.random() * 10,
+  }));
+
+const stars = generateStars(100); // increase to 100 for full-screen effect
+
 const HeroSection = () => {
   return (
-    <div className="w-screen h-screen bg-black text-white flex flex-col justify-start items-center relative overflow-hidden">
+    <div className="w-screen h-screen z-10 bg-black text-white flex flex-col justify-start items-center relative overflow-hidden">
       <Navbar />
 
-      {/* Background stars */}
-      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full top-1/4 left-1/3 blur-[0.5px]"></div>
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full top-3/4 right-1/4 blur-[0.5px]"></div>
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full bottom-1/4 left-1/4 blur-[0.5px]"></div>
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full top-1/2 right-1/2 blur-[0.5px]"></div>
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full top-[10%] left-[60%] blur-[0.5px]"></div>
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full bottom-[20%] right-[60%] blur-[0.5px]"></div>
+      {/* Background animated stars */}
+      <div className="absolute inset-0 z-0 pointer-events-none w-full h-full">
+        {stars.map((star) => {
+          const finalTop = star.top + star.driftY;
+          const finalLeft = star.left + star.driftX;
+
+          return (
+            <motion.div
+              key={star.id}
+              className="absolute bg-gray-500 rounded-full"
+              initial={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                opacity: 0.8,
+              }}
+              animate={{
+                top: `${finalTop}%`,
+                left: `${finalLeft}%`,
+                opacity: [0.8, 0.6, 0.8],
+              }}
+              transition={{
+                duration: star.duration,
+                ease: "linear",
+                repeat: Infinity,
+                repeatType: "loop",
+                delay: star.delay,
+              }}
+              style={{
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Main content */}

@@ -4,13 +4,52 @@ import { Square, Circle, Triangle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// Data for all five value cards
+// ⭐ Generate stars inside this file
+const generateStars = (count = 80) => {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: Math.random() * 3 + 2, // 2–5px
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+  }));
+};
+
+const stars = generateStars(80);
+
+// Team values
 const teamValues = [
-  { title: "Dedication.", description: "Our team is committed to helping each other and our clients succeed.", icon: Square, shapeType: "square" },
-  { title: "Growth.", description: "We support personal development and value ongoing learning.", icon: Circle, shapeType: "circle" },
-  { title: "Collaboration.", description: "We work closely together to deliver success for every project.", icon: Square, shapeType: "square" },
-  { title: "Expertise.", description: "Each team member brings deep experience in their field.", icon: Circle, shapeType: "circle" },
-  { title: "Vision.", description: "We share a drive for innovative, impactful solutions.", icon: Triangle, shapeType: "triangle" },
+  {
+    title: "Dedication.",
+    description:
+      "Our team is committed to helping each other and our clients succeed.",
+    icon: Square,
+    shapeType: "square",
+  },
+  {
+    title: "Growth.",
+    description: "We support personal development and value ongoing learning.",
+    icon: Circle,
+    shapeType: "circle",
+  },
+  {
+    title: "Collaboration.",
+    description:
+      "We work closely together to deliver success for every project.",
+    icon: Square,
+    shapeType: "square",
+  },
+  {
+    title: "Expertise.",
+    description: "Each team member brings deep experience in their field.",
+    icon: Circle,
+    shapeType: "circle",
+  },
+  {
+    title: "Vision.",
+    description: "We share a drive for innovative, impactful solutions.",
+    icon: Triangle,
+    shapeType: "triangle",
+  },
 ];
 
 // Card animation — fade in + slide up
@@ -21,12 +60,13 @@ const cardVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      delay: index * 0.2, // each card comes slightly after the previous one
+      delay: index * 0.2,
       ease: "easeOut",
     },
   }),
 };
 
+// Card component
 const ValueCard = ({ title, description, IconComponent, shapeType, index }) => (
   <motion.div
     custom={index}
@@ -66,7 +106,48 @@ const TeamPage = () => {
   const rowTwoValues = teamValues.slice(2);
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans antialiased">
+    <div className="relative min-h-screen bg-transparent text-white font-sans antialiased z-10">
+      {/* ✅ Background Elements */}
+      <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden">
+        {stars.map((star) => {
+          const driftX = (Math.random() - 0.5) * 100;
+          const driftY = (Math.random() - 0.5) * 100;
+          const duration = 30 + Math.random() * 30;
+
+          const finalTop = star.top + driftY;
+          const finalLeft = star.left + driftX;
+
+          return (
+            <motion.div
+              key={star.id}
+              className="absolute bg-gray-500 rounded-full"
+              initial={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                opacity: 0.8,
+              }}
+              animate={{
+                top: `${finalTop}%`,
+                left: `${finalLeft}%`,
+                opacity: [0.8, 0.4, 0.8],
+              }}
+              transition={{
+                duration,
+                ease: "linear",
+                repeat: Infinity,
+                repeatType: "mirror",
+                delay: Math.random() * 10,
+              }}
+              style={{
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+              }}
+            />
+          );
+        })}
+      </div>
+
+      {/* Content */}
       <Navbar />
 
       <div className="container mx-auto mt-10 px-6 py-20 lg:py-24 max-w-5xl">

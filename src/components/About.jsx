@@ -25,7 +25,7 @@ const About = () => {
         <TextAnimate
           className="font-semibold text-xl text-center text-white max-w-4xl"
           animation="blurInUp"
-          by="character"
+          by="word"
           once
         >
           M/S Inventio Global Consultancy Pvt. Ltd. is a multi-disciplinary firm

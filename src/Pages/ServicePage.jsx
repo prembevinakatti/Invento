@@ -200,8 +200,7 @@ const ServicePage = () => {
         {/* Header Section with animation */}
         <motion.header
           initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }} // ✅ changed
           transition={{ duration: 0.6 }}
           className="text-center leading mt-10 mb-16 lg:mb-24"
         >

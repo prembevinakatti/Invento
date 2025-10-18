@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Suspense, memo, useEffect } from "react";
 import { Mail, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
-import Spline from "@splinetool/react-spline";
+import { motion, LazyMotion, domAnimation } from "framer-motion";
+
+// ✅ Lazy load the heavy Spline 3D model
+const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
 // Dummy Stats
 const stats = [
@@ -12,48 +14,49 @@ const stats = [
   { value: "4.8", label: "Average Rating" },
 ];
 
-// Animation Variants
+// Animation Variants (defined once)
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.2,
-      duration: 0.6,
+      delay: i * 0.15,
+      duration: 0.5,
       ease: "easeOut",
     },
   }),
 };
 
-// Stat Card
-const StatCard = ({ value, label, index }) => (
+// ✅ Memoized components to reduce re-renders
+const StatCard = memo(({ value, label, index }) => (
   <motion.div
-    className="p-3 md:p-4 bg-[#111111] border border-gray-800/40 rounded-lg shadow-md flex-1 text-center min-w-[80px]"
+    className="p-3 md:p-4 bg-[#111111] border border-gray-800/40 rounded-lg shadow-md flex-1 text-center min-w-[80px] will-change-transform"
     variants={cardVariants}
     initial="hidden"
-    animate="visible"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.3 }}
     custom={index}
   >
     <div className="text-2xl font-bold text-white mb-1">{value}</div>
     <div className="text-sm text-gray-400 font-medium">{label}</div>
   </motion.div>
-);
+));
 
-// Testimonial Card
-const TestimonialCard = () => (
+const TestimonialCard = memo(() => (
   <motion.div
-    className="p-5 md:p-6 mt-6 bg-[#111111] border border-gray-800/40 rounded-xl shadow-lg max-w-sm w-full"
+    className="p-5 md:p-6 mt-6 bg-[#111111] border border-gray-800/40 rounded-xl shadow-lg max-w-sm w-full will-change-transform"
     variants={cardVariants}
     initial="hidden"
-    animate="visible"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.3 }}
     custom={3}
   >
     <div className="flex items-start">
       <div className="w-10 h-10 bg-gray-800 rounded-md mr-3 flex-shrink-0" />
       <div>
-        <div className="text-lg font-semibold text-white">name</div>
-        <div className="text-sm text-gray-400">company</div>
+        <div className="text-lg font-semibold text-white">John Doe</div>
+        <div className="text-sm text-gray-400">Acme Corp</div>
       </div>
     </div>
 
@@ -64,198 +67,212 @@ const TestimonialCard = () => (
         ))}
         <span className="ml-2 text-white text-sm">5.0</span>
       </div>
-      <p className="text-gray-300 text-sm">review</p>
+      <p className="text-gray-300 text-sm">
+        “They were professional and quick to deliver. Highly recommended!”
+      </p>
     </div>
   </motion.div>
-);
+));
 
-// Submit Button
-const SubmitButton = () => (
+const SubmitButton = memo(() => (
   <button
     type="submit"
-    className="w-full py-4 text-lg font-semibold rounded-xl shadow-xl text-black transition-all duration-300 bg-gradient-to-t from-gray-300 to-white hover:from-gray-400 hover:to-gray-100"
+    className="w-full py-4 text-lg font-semibold rounded-xl shadow-xl text-black transition-transform duration-300 bg-gradient-to-t from-gray-300 to-white hover:scale-[1.02] hover:from-gray-400 hover:to-gray-100 will-change-transform"
   >
     Send Message
   </button>
-);
+));
 
-// Main Page
 const ContactPage = () => {
+  // ✅ Defer Spline model loading slightly to improve initial paint
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      import("@splinetool/react-spline");
+    }, 1500);
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans antialiased relative overflow-hidden">
-      <Navbar />
+      {/* ✅ Navbar */}
+      <div className="relative z-50">
+        <Navbar />
+      </div>
 
-      {/* Simulated Dark Red Glow Background */}
+      {/* ✅ Subtle background glow */}
       <div
-        className="absolute inset-0 z-0 opacity-20"
+        className="absolute inset-0 z-0 opacity-25 pointer-events-none will-change-transform"
         style={{
           background:
-            "radial-gradient(circle at 75% 50%, #8b0000 0%, transparent 40%)",
+            "radial-gradient(circle at 75% 50%, #8b0000 0%, transparent 45%)",
+          transform: "translateZ(0)",
         }}
-      ></div>
+      />
 
-      {/* Dummy Spline Model Centered in Background */}
+      {/* ✅ Lazy-loaded 3D Model (after interaction) */}
       <div className="absolute w-full h-full bottom-56 left-0 z-0 flex items-center justify-center pointer-events-none opacity-30">
         <div className="w-[600px] h-[600px]">
-          <Spline scene="https://prod.spline.design/P0iJMYCbFwHDMHfc/scene.splinecode" />
+          <Suspense fallback={<div className="text-gray-500 text-center">Loading 3D...</div>}>
+            <Spline
+              scene="https://prod.spline.design/P0iJMYCbFwHDMHfc/scene.splinecode"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </Suspense>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto mt-10 px-6 py-20 lg:py-24 max-w-7xl relative z- flex flex-col lg:flex-row gap-12">
-        {/* Left Column */}
-        <div className="lg:w-1/2 flex flex-col justify-start">
-          <header className="mb-8">
+      {/* ✅ Main Content */}
+      <LazyMotion features={domAnimation}>
+        <div className="container mx-auto mt-10 px-6 py-20 lg:py-24 max-w-7xl relative z-10 flex flex-col lg:flex-row gap-12">
+          {/* Left Column */}
+          <div className="lg:w-1/2 flex flex-col justify-start">
             <motion.h1
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 1 }}
-              className="text-5xl sm:text-4xl font-semibold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white/50 to-white/20"
+              initial={{ opacity: 0, y: 80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="text-5xl sm:text-4xl font-semibold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white/50 to-white/20 will-change-transform"
             >
               Let’s Collaborate and <br />
               <span className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-white via-white/30 to-white/20">
                 Begin the work
               </span>
             </motion.h1>
-          </header>
 
-          {/* Stats */}
-          <div className="flex flex-row gap-4 mb-8">
-            {stats.map((stat, index) => (
-              <StatCard
-                key={index}
-                value={stat.value}
-                label={stat.label}
-                index={index}
-              />
-            ))}
+            {/* Stats */}
+            <div className="flex flex-row gap-4 mb-8 mt-8 flex-wrap">
+              {stats.map((stat, index) => (
+                <StatCard key={index} {...stat} index={index} />
+              ))}
+            </div>
+
+            {/* Testimonial */}
+            <TestimonialCard />
           </div>
 
-          {/* Testimonial */}
-          <TestimonialCard />
-        </div>
-
-        {/* Right Column (Form) */}
-        <motion.div
-          className="lg:w-[480px] bg-[#0A0A0A] border border-gray-800/40 p-6 md:p-8 rounded-2xl shadow-2xl"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={4}
-        >
-          <form className="space-y-6">
-            {/* Name + Email */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xs font-semibold uppercase text-gray-400 mb-2"
-                >
-                  NAME
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Your Name"
-                  className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-xs font-semibold uppercase text-gray-400 mb-2"
-                >
-                  EMAIL
-                </label>
-                <div className="relative">
+          {/* Right Column (Form) */}
+          <motion.div
+            className="lg:w-[480px] bg-[#0A0A0A] border border-gray-800/40 p-6 md:p-8 rounded-2xl shadow-2xl will-change-transform"
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            custom={4}
+          >
+            <form className="space-y-6">
+              {/* Name + Email */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-xs font-semibold uppercase text-gray-400 mb-2"
+                  >
+                    NAME
+                  </label>
                   <input
-                    type="email"
-                    id="email"
-                    placeholder="Your Email"
-                    className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 pr-10 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                  />
-                  <Mail
-                    size={20}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400"
+                    type="text"
+                    id="name"
+                    placeholder="Your Name"
+                    className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
                   />
                 </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-xs font-semibold uppercase text-gray-400 mb-2"
+                  >
+                    EMAIL
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="Your Email"
+                      className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 pr-10 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    />
+                    <Mail
+                      size={20}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Website */}
-            <div>
-              <label
-                htmlFor="website"
-                className="block text-xs font-semibold uppercase text-gray-400 mb-2"
-              >
-                WEBSITE <span className="text-gray-600">(optional)</span>
-              </label>
-              <input
-                type="url"
-                id="website"
-                placeholder="Company Website"
-                className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-              />
-            </div>
+              {/* Website */}
+              <div>
+                <label
+                  htmlFor="website"
+                  className="block text-xs font-semibold uppercase text-gray-400 mb-2"
+                >
+                  WEBSITE <span className="text-gray-600">(optional)</span>
+                </label>
+                <input
+                  type="url"
+                  id="website"
+                  placeholder="Company Website"
+                  className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                />
+              </div>
 
-            {/* Budget Dropdown */}
-            <div>
-              <label
-                htmlFor="budget"
-                className="block text-xs font-semibold uppercase text-gray-400 mb-2"
-              >
-                BUDGET
-              </label>
-              <select
-                id="budget"
-                defaultValue=""
-                className="w-full bg-[#111111] border border-gray-800/40 text-gray-400 rounded-lg p-3 appearance-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-              >
-                <option value="" disabled hidden>
-                  Select Budget...
-                </option>
-                <option value="1" className="text-white">
-                  $1k - $5k
-                </option>
-                <option value="2" className="text-white">
-                  $5k - $25k
-                </option>
-                <option value="3" className="text-white">
-                  $25k+
-                </option>
-              </select>
-            </div>
+              {/* Budget Dropdown */}
+              <div>
+                <label
+                  htmlFor="budget"
+                  className="block text-xs font-semibold uppercase text-gray-400 mb-2"
+                >
+                  BUDGET
+                </label>
+                <select
+                  id="budget"
+                  defaultValue=""
+                  className="w-full bg-[#111111] border border-gray-800/40 text-gray-400 rounded-lg p-3 appearance-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                >
+                  <option value="" disabled hidden>
+                    Select Budget...
+                  </option>
+                  <option value="1" className="text-white">
+                    $1k - $5k
+                  </option>
+                  <option value="2" className="text-white">
+                    $5k - $25k
+                  </option>
+                  <option value="3" className="text-white">
+                    $25k+
+                  </option>
+                </select>
+              </div>
 
-            {/* Message */}
-            <div>
-              <label
-                htmlFor="message"
-                className="block text-xs font-semibold uppercase text-gray-400 mb-2"
-              >
-                MESSAGE
-              </label>
-              <textarea
-                id="message"
-                placeholder="Your Message"
-                rows="5"
-                className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 resize-none"
-              ></textarea>
-            </div>
+              {/* Message */}
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-xs font-semibold uppercase text-gray-400 mb-2"
+                >
+                  MESSAGE
+                </label>
+                <textarea
+                  id="message"
+                  placeholder="Your Message"
+                  rows="5"
+                  className="w-full bg-[#111111] border border-gray-800/40 text-white rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 resize-none transition-all"
+                ></textarea>
+              </div>
 
-            {/* Submit */}
-            <div className="pt-2">
-              <SubmitButton />
-              <p className="text-center text-sm text-gray-500 mt-3">
-                (We will reach out to you within 48hrs)
-              </p>
-            </div>
-          </form>
-        </motion.div>
-      </div>
+              {/* Submit */}
+              <div className="pt-2">
+                <SubmitButton />
+                <p className="text-center text-sm text-gray-500 mt-3">
+                  (We will reach out to you within 48hrs)
+                </p>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      </LazyMotion>
 
       <Footer />
     </div>
   );
 };
 
-export default ContactPage;
+export default memo(ContactPage);

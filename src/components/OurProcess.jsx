@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { MousePointer2, List, Feather, Rocket } from "lucide-react";
 import { Separator } from "./ui/separator";
 
@@ -51,40 +50,40 @@ const ProcessSection = () => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["start end", "end start"], // triggers during section visibility
+    offset: ["start end", "end start"],
   });
 
-  // Scroll motion — small subtle x movement
-  const x = useTransform(scrollYProgress, [0, 1], ["30%", "-20%"]); // adjust -20% → -30% for more motion
+  const x = useTransform(scrollYProgress, [0, 1], ["30%", "-20%"]);
 
   return (
     <section
       ref={targetRef}
-      className="bg-[#0A0909] text-white py-24 px-4 sm:px-8 lg:px-16"
+      className="bg-[#0A0909] text-white py-16 sm:py-20 px-4 sm:px-6 lg:px-16"
     >
       {/* Header */}
-      <div>
-        <div className="w-full text-center mb-10">
-          <button className="text-sm font-semibold tracking-wider px-3 py-1 mb-6 border border-gray-700 bg-[#0D0D0D] hover:border-white text-white/70 transition duration-300 rounded-md">
+      <div className="max-w-7xl mx-auto">
+        <div className="w-full text-center mb-6 sm:mb-10">
+          <button className="text-sm sm:text-base font-semibold tracking-wider px-3 py-1 sm:py-2 border border-gray-700 bg-[#0D0D0D] hover:border-white text-white/70 transition duration-300 rounded-md">
             Our Process
           </button>
         </div>
-        <div className="mb-16 text-right">
-          <h1 className="text-4xl sm:text-6xl lg:text-5xl font-semibold mb-4">
+
+        <div className="mb-12 sm:mb-16 text-left sm:text-right">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-semibold mb-3 leading-tight">
             Our Process Is Everything
           </h1>
-          <p className="text-lg sm:text-xl text-zinc-400">
+          <p className="text-sm sm:text-base md:text-lg text-zinc-400">
             A streamlined, expert-led approach that delivers clarity,
-            compliance, and <br /> results.
+            compliance, and <br className="hidden sm:inline" /> results.
           </p>
         </div>
       </div>
 
       {/* Horizontal Scrolling Cards */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-x-auto overflow-y-hidden -mx-4 sm:-mx-6 lg:-mx-16 px-4 sm:px-6 lg:px-16 scrollbar-hide">
         <motion.div
           style={{ x }}
-          className="flex gap-8 will-change-transform transition-all"
+          className="flex gap-6 sm:gap-8 will-change-transform transition-all"
         >
           {processSteps.map((step) => (
             <ProcessCard key={step.id} step={step} />
@@ -99,27 +98,29 @@ const ProcessCard = ({ step }) => {
   const Icon = step.icon;
 
   return (
-    <Card className="bg-[#111111] border-none text-white shadow-2xl w-[20rem] h-[20rem] flex-shrink-0 p-6">
-      <CardHeader className="p-0 ">
-        <div className="flex justify-between items-start mb-4">
-          <Icon className="w-8 h-8 text-white stroke-[1.5]" />
-          <span className="text-md font-semibold bg-black w-6 h-6 rounded-full flex items-center justify-center text-zinc-500">
+    <Card className="bg-[#111111] border-none text-white shadow-2xl w-[16rem] sm:w-[18rem] md:w-[20rem] flex-shrink-0 p-4 sm:p-6 md:p-6 h-[22rem] sm:h-[22rem] md:h-[26rem]">
+      <CardHeader className="p-0">
+        <div className="flex justify-between items-start mb-3 sm:mb-4">
+          <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-white stroke-[1.5]" />
+          <span className="text-sm sm:text-md font-semibold bg-black w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-zinc-500">
             {step.id}
           </span>
         </div>
-        <CardTitle className="text-lg font-bold">{step.title}</CardTitle>
+        <CardTitle className="text-sm sm:text-lg md:text-lg font-bold">
+          {step.title}
+        </CardTitle>
       </CardHeader>
 
-      <CardContent className="p-0  flex-grow">
-        <CardDescription className="text-xs text-zinc-400 leading-relaxed">
+      <CardContent className="p-0 flex-grow">
+        <CardDescription className="text-xs sm:text-sm md:text-base text-zinc-400 leading-relaxed">
           {step.description}
         </CardDescription>
       </CardContent>
 
-      <Separator className="bg-gray-500" />
+      <Separator className="bg-gray-500 my-2" />
 
       <CardFooter className="p-0">
-        <p className="uppercase tracking-wider border rounded-full px-3 py-1 text-xs border-zinc-700 text-white hover:bg-zinc-800 hover:text-white bg-transparent">
+        <p className="uppercase tracking-wider border rounded-full px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm border-zinc-700 text-white hover:bg-zinc-800 hover:text-white bg-transparent text-center">
           {step.buttonText}
         </p>
       </CardFooter>

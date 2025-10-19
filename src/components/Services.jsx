@@ -30,7 +30,7 @@ const topVariants = {
 
 // Reusable Service Card
 const ServiceCard = ({ icon: Icon, title, description }) => (
-  <div className="flex flex-col p-8 rounded-xl border border-zinc-800 bg-[#070505] backdrop-blur-sm shadow-xl h-[220px]">
+  <div className="flex w-[360px] sm:w-full md:w-full lg:w-full flex-col p-8 rounded-xl border border-zinc-800 bg-[#070505] backdrop-blur-sm shadow-xl md:h-[220px] sm:h-[220px] lg:h-[220px]">
     <div className="mb-4 w-10 h-10 flex items-center justify-center rounded-lg border border-gray-700 bg-[#383737]">
       <Icon className="w-6 h-6 text-gray-400" />
     </div>
@@ -61,10 +61,10 @@ const Services = () => {
         className="w-full px-13 flex flex-col lg:flex-row items-center justify-between mb-16 mx-auto"
       >
         <div className="text-start mb-6 lg:mb-0">
-          <h1 className="text-4xl sm:text-5xl lg:text-5xl font-semibold mb-3 leading-tight max-w-4xl">
+          <h1 className="text-4xl text-center sm:text-start md:text-start lg:text-start sm:text-5xl lg:text-5xl font-semibold mb-3 leading-tight max-w-4xl">
             Services We Provide
           </h1>
-          <p className="text-lg text-gray-400 mb-8 font-semibold">
+          <p className="text-sm sm:text-lg md:text-lg lg:text-lg text-center sm:text-start md:text-start lg:text-start text-gray-400 mb-8 font-semibold">
             Helping enterprises thrive with strategic consulting, legal
             advisory, and tailored <br />
             business solutions designed to drive long-term growth and

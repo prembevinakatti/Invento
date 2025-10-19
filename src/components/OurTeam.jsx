@@ -33,45 +33,45 @@ const teamMembers = [
     imageSrc:
       "https://framerusercontent.com/images/mu2Kcpe51Vv4Vr6Lh3dGC4ppbd4.png",
   },
+  {
+    name: "Sarah Mitchell",
+    title: "Lead Consultant",
+    imageSrc:
+      "https://framerusercontent.com/images/tPYkIwImGTYNrIWUAK9mkYyUgw.jpg?scale-down-to=1024",
+  },
+  {
+    name: "James Carter",
+    title: "Business Expert",
+    imageSrc:
+      "https://framerusercontent.com/images/epMeSwPDTkJjWDiv4bvNJfg.png",
+  },
+  {
+    name: "Alice Johnson",
+    title: "Compliance Officer",
+    imageSrc:
+      "https://framerusercontent.com/images/mu2Kcpe51Vv4Vr6Lh3dGC4ppbd4.png",
+  },
 ];
 
-const SLIDE_INTERVAL = 3000; // 3 seconds
-const CARDS_PER_VIEW = 4;
-const GAP_REM = 2;
+const SLIDE_INTERVAL = 3000;
 
-// 🧩 Animation Variants
+// Animation Variants
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
-const container = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
 const cardVariant = {
   hidden: { opacity: 0, y: 40, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const TeamCard = ({ member }) => (
+const TeamCard = ({ member, cardWidth }) => (
   <motion.div
     variants={cardVariant}
     whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
     className="flex-shrink-0 relative h-[23rem] overflow-hidden rounded-xl shadow-2xl cursor-pointer"
-    style={{
-      width: `calc(100% / ${CARDS_PER_VIEW} - ${
-        GAP_REM - GAP_REM / CARDS_PER_VIEW
-      }rem)`,
-    }}
+    style={{ width: cardWidth }}
   >
     <img
       src={member.imageSrc}
@@ -88,10 +88,21 @@ const TeamCard = ({ member }) => (
 
 const OurTeam = () => {
   const [index, setIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(4);
   const intervalRef = useRef(null);
   const totalSlides = teamMembers.length;
 
-  const infiniteMembers = [...teamMembers, ...teamMembers];
+  const updateCardsPerView = () => {
+    if (window.innerWidth < 640) setCardsPerView(1); // mobile
+    else if (window.innerWidth < 1024) setCardsPerView(2); // tablet
+    else setCardsPerView(4); // desktop
+  };
+
+  useEffect(() => {
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
 
   const nextSlide = () => setIndex((prev) => (prev + 1) % totalSlides);
   const prevSlide = () => setIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
@@ -106,6 +117,8 @@ const OurTeam = () => {
     direction === "next" ? nextSlide() : prevSlide();
     intervalRef.current = setInterval(nextSlide, SLIDE_INTERVAL);
   };
+
+  const cardWidth = `calc(100% / ${cardsPerView} - 1rem)`; // responsive width
 
   return (
     <section className="bg-[#0A0909] text-white py-24 px-4 sm:px-8 lg:px-16 text-center relative overflow-hidden">
@@ -144,24 +157,17 @@ const OurTeam = () => {
         </button>
       </motion.div>
 
-      <motion.div
-        className="relative max-w-7xl mx-auto"
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
+      <div className="relative max-w-7xl mx-auto">
         <div className="overflow-hidden">
           <motion.div
-            className="flex"
+            className="flex gap-4"
             animate={{
-              x: `-${index * (100 / CARDS_PER_VIEW + (GAP_REM * 100) / 100)}%`,
+              x: `-${index * (100 / cardsPerView + 0.5)}%`,
             }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            style={{ gap: `${GAP_REM}rem` }}
           >
-            {infiniteMembers.map((member, i) => (
-              <TeamCard key={i} member={member} />
+            {teamMembers.map((member, i) => (
+              <TeamCard key={i} member={member} cardWidth={cardWidth} />
             ))}
           </motion.div>
         </div>
@@ -184,7 +190,7 @@ const OurTeam = () => {
             <ChevronRight size={24} />
           </motion.button>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

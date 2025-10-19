@@ -22,6 +22,18 @@ import Navbar from "@/components/Navbar";
 import Innovant from "@/components/Innovant";
 import Footer from "@/components/Footer";
 
+// Generate stars (same as before)
+const generateStars = (count = 80) => {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: Math.random() * 3 + 2, // 2–5px
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+  }));
+};
+
+const stars = generateStars(80);
+
 // Map icon names to the imported components
 const iconMap = {
   Check,
@@ -168,9 +180,9 @@ const fadeUp = {
   }),
 };
 
-// 🧩 Service Card Component
 const ServiceCard = ({ iconName, title, description, index }) => {
   const IconComponent = iconMap[iconName];
+
   return (
     <motion.div
       variants={fadeUp}
@@ -178,13 +190,31 @@ const ServiceCard = ({ iconName, title, description, index }) => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       custom={index}
-      className="lg:p-4 lg:px-7 bg-[#060505] h-[200px] border border-gray-700/40 rounded-[24px] shadow-2xl transition-all duration-300 ease-in-out hover:scale-[1.02]"
+      className="
+        flex flex-col
+        bg-[#060505]
+        border border-gray-700/40
+        rounded-2xl
+        shadow-2xl
+        transition-all duration-300 ease-in-out
+        hover:scale-[1.03]
+        p-4 sm:p-5 md:p-6 lg:p-7
+        min-h-[220px]
+        h-auto
+      "
     >
-      <div className="w-10 h-10 flex items-center justify-center bg-[#383737] rounded-lg text-white/80">
-        {IconComponent && <IconComponent size={20} strokeWidth={2.5} />}
+      {/* Icon */}
+      <div className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-[#383737] rounded-lg text-white/80 mb-3">
+        {IconComponent && <IconComponent size={22} strokeWidth={2.5} />}
       </div>
-      <h3 className="text-xl font-semibold text-white mt-2 mb-3">{title}</h3>
-      <p className="text-md text-gray-400 font-semibold leading-relaxed">
+
+      {/* Title */}
+      <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-white mb-2">
+        {title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-sm sm:text-base md:text-[15px] text-gray-400 font-medium leading-relaxed">
         {description}
       </p>
     </motion.div>
@@ -194,26 +224,78 @@ const ServiceCard = ({ iconName, title, description, index }) => {
 // 🌟 Main Service Page
 const ServicePage = () => {
   return (
-    <div className="min-h-screen bg-[#0A0909] text-white font-satoshi antialiased">
+    <div className="relative min-h-screen bg-black text-white font-satoshi antialiased z-10">
+      {/* Background drifting stars */}
+      <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden">
+        {stars.map((star) => {
+          const driftX = (Math.random() - 0.5) * 100;
+          const driftY = (Math.random() - 0.5) * 100;
+          const duration = 30 + Math.random() * 30;
+
+          const finalTop = star.top + driftY;
+          const finalLeft = star.left + driftX;
+
+          return (
+            <motion.div
+              key={star.id}
+              className="absolute bg-gray-500 rounded-full"
+              initial={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                opacity: 0.8,
+              }}
+              animate={{
+                top: `${finalTop}%`,
+                left: `${finalLeft}%`,
+                opacity: [0.8, 0.4, 0.8],
+              }}
+              transition={{
+                duration,
+                ease: "linear",
+                repeat: Infinity,
+                repeatType: "mirror",
+                delay: Math.random() * 10,
+              }}
+              style={{
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+              }}
+            />
+          );
+        })}
+      </div>
+
       <Navbar />
-      <div className="container mx-auto px-4 py-20 lg:py-24 max-w-7xl">
+      <div className="container mx-auto w-full px-4 sm:px-6 md:px-8 py-16 md:py-20 lg:py-24 flex flex-col items-center justify-center">
         {/* Header Section with animation */}
         <motion.header
           initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }} // ✅ changed
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center leading mt-10 mb-16 lg:mb-24"
+          className="text-center mt-6 sm:mt-10 mb-10 sm:mb-14 lg:mb-20"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-4xl font-bold text-white mb-4">
+          <h1 className="text-2xl mt-10  sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
             Secure your financial future.
           </h1>
-          <p className="text-xl md:text-2xl lg:text-5xl font-medium text-[#777777]">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-[#888888] max-w-2xl mx-auto">
             Data-driven consulting. Trusted results.
           </p>
         </motion.header>
 
         {/* Services Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <section
+          className="
+      grid 
+      grid-cols-1 
+      sm:grid-cols-2 
+      xl:grid-cols-3 
+      gap-5 
+      sm:gap-6 
+      lg:gap-8 
+      w-full 
+      max-w-7xl
+    "
+        >
           {services.map((service, index) => (
             <ServiceCard
               key={service.id}

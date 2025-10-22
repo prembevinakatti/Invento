@@ -148,9 +148,11 @@ const TeamPage = () => {
       </div>
 
       {/* Content */}
-      <Navbar />
+      <div className="py-5">
+        <Navbar />
+      </div>
 
-      <div className="container mx-auto mt-10 px-6 py-20 lg:py-24 max-w-5xl">
+      <div className="container mx-auto mt- px-6 py-20 lg:py-24 max-w-5xl">
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: 40 }}
@@ -168,7 +170,7 @@ const TeamPage = () => {
         </motion.header>
 
         {/* Row 1 */}
-        <section className="flex flex-col md:flex-row gap-8 lg:gap-5 mb-12">
+        <section className="flex flex-col md:flex-row gap-8 pr-3 lg:gap-5 mb-12">
           {rowOneValues.map((value, index) => (
             <ValueCard
               key={`row1-${index}`}

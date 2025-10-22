@@ -35,7 +35,9 @@ const FeatureCard = ({ Icon, title, description, iconColorClass }) => (
       <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${iconColorClass}`} />
     </div>
     <h2 className="text-xl sm:text-2xl lg:text-2xl font-semibold">{title}</h2>
-    <p className="text-xl md:text-sm lg:text-sm  text-gray-400 leading-relaxed">{description}</p>
+    <p className="text-xl md:text-sm lg:text-sm  text-gray-400 leading-relaxed">
+      {description}
+    </p>
   </div>
 );
 
@@ -60,7 +62,8 @@ const Choose = () => {
         </h1>
 
         <p className="text-sm sm:text-md md:text-base text-gray-400 font-semibold text-center mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed">
-          Discover how our integrated consulting services can scale your operations and <br /> optimize performance.
+          Discover how our integrated consulting services can scale your
+          operations and <br /> optimize performance.
         </p>
       </motion.div>
 
@@ -88,7 +91,11 @@ const Choose = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
             >
-              <FeatureCard Icon={Icon} title={titles[index]} description={descriptions[index]} />
+              <FeatureCard
+                Icon={Icon}
+                title={titles[index]}
+                description={descriptions[index]}
+              />
             </motion.div>
           );
         })}

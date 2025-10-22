@@ -137,7 +137,7 @@ const HeroSection = () => {
                 key={index}
                 src={logo}
                 alt={`logo-${index}`}
-                className="h-8 w-38 mx-8 sm:h-10 md:h-12 object-contain opacity-70 hover:opacity-100 transition duration-300"
+                className="h-8 w-38 mx-0 sm:mx-8 md:mx-8 lg:mx-8 sm:h-10 md:h-12 object-contain opacity-70 hover:opacity-100 transition duration-300"
               />
             ))}
           </Marquee>

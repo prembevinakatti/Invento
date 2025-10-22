@@ -21,8 +21,8 @@ const About = () => {
       {/* 🧩 Text Content */}
       <div className="relative z-20 flex flex-col items-center justify-center h-full px-4 sm:px-6 md:px-10 text-center">
         {/* Button */}
-        <button className="mb-4 px-4 sm:px-6 py-2 bg-black/40 text-gray-300 text-sm sm:text-base rounded shadow hover:bg-black/60 transition-all duration-300">
-          Who are you
+        <button className="mb-10 px-2 sm:px-6 py-1 bg-black/60 text-gray-300 text-sm sm:text-base rounded shadow hover:bg-black/60 transition-all duration-300">
+          Who we are
         </button>
 
         {/* Animated Text */}
@@ -34,8 +34,8 @@ const About = () => {
         >
           M/S Inventio Global Consultancy Pvt. Ltd. is a multi-disciplinary firm
           offering tailored solutions in valuation, financial consulting,
-          compliance, tax advisory, IPO services, and business outsourcing.
-          With deep regulatory expertise and a client-centric approach, we help
+          compliance, tax advisory, IPO services, and business outsourcing. With
+          deep regulatory expertise and a client-centric approach, we help
           businesses across sectors stay compliant, raise funds, and scale
           effectively.
         </TextAnimate>

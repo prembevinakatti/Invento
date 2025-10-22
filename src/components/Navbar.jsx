@@ -12,7 +12,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full fixed top-0 left-0 z-50 flex justify-center bg-transparent backdrop-blur-sm">
+    <nav className="w-full absolute top-0 left-0 z-50 flex justify-center bg-transparent backdrop-blur-sm">
       <div className="w-[92%] md:w-4/5 bg-[#050505]/90 border border-gray-800 text-white flex items-center justify-between py-3 px-5 md:px-7 mt-4 rounded-xl shadow-2xl transition-all duration-300">
         {/* Logo */}
         <h1

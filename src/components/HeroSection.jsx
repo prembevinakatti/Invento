@@ -91,8 +91,8 @@ const HeroSection = () => {
             className="text-base sm:text-lg text-neutral-400 leading-relaxed max-w-xl mx-auto lg:mx-0"
           >
             From startup structuring to global expansion — we help businesses
-            navigate compliance, valuation, and funding, all under one
-            strategic roof.
+            navigate compliance, valuation, and funding, all under one strategic
+            roof.
           </motion.p>
 
           <motion.button
@@ -131,13 +131,13 @@ const HeroSection = () => {
         className="w-full flex items-center justify-center mt-4 sm:mt-8 mb-4"
       >
         <div className="relative flex w-[90%] sm:w-[80%] md:w-[70%] lg:w-[50%] flex-col items-center justify-center overflow-hidden">
-          <Marquee pauseOnHover className="[--duration:20s] gap-6 sm:gap-8">
+          <Marquee pauseOnHover className="[--duration:20s] gap-10 sm:gap-8">
             {logos.map((logo, index) => (
               <img
                 key={index}
                 src={logo}
                 alt={`logo-${index}`}
-                className="h-8 sm:h-10 md:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition duration-300"
+                className="h-8 w-38 mx-8 sm:h-10 md:h-12 object-contain opacity-70 hover:opacity-100 transition duration-300"
               />
             ))}
           </Marquee>

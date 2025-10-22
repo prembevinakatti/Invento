@@ -150,6 +150,25 @@ html,
 body {
   background-color: #000;
   font-family: "InterCustom", sans-serif;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #454444 #111111;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #1a1919;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #101010;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #141414;
 }
 
 /* Hide scrollbar but allow scrolling */

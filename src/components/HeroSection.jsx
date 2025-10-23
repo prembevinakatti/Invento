@@ -29,15 +29,21 @@ const stars = generateStars(80);
 
 const HeroSection = () => {
   return (
-    <div className="w-screen min-h-screen bg-black text-white flex flex-col items-center relative overflow-hidden">
+    <div className="relative w-screen min-h-screen bg-black text-white flex flex-col items-center overflow-hidden">
       <Navbar />
 
-      {/* ✨ Stars Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* ✨ 3D Background for Mobile */}
+      <div className="absolute inset-0 z-0 block lg:hidden opacity-60">
+        <Suspense fallback={<div className="text-white text-center mt-20">Loading 3D...</div>}>
+          <Spline scene="https://prod.spline.design/CkPIBpfhM8SqxI0k/scene.splinecode" />
+        </Suspense>
+      </div>
+
+      {/* ✨ Stars Background (above 3D for subtle shine) */}
+      <div className="absolute inset-0 z-[1] pointer-events-none">
         {stars.map((star) => {
           const finalTop = star.top + star.driftY;
           const finalLeft = star.left + star.driftX;
-
           return (
             <motion.div
               key={star.id}
@@ -69,14 +75,14 @@ const HeroSection = () => {
       </div>
 
       {/* 🌌 Main Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between px-5 sm:px-10 md:px-16 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-8 sm:pb-10">
+      <div className="relative z-[2] w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between px-5 sm:px-10 md:px-16 pt-24 sm:pt-28 lg:pt-32 pb-10">
         {/* Left Text Section */}
         <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left mb-10 lg:mb-0">
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-white via-white/50 to-white/20 leading-snug"
+            className="text-4xl sm:text-5xl md:text-6xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-white via-white/50 to-white/20 leading-snug drop-shadow-lg"
           >
             Strategic Consulting <br />
             <span className="text-3xl sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-white via-white/30 to-white/10">
@@ -88,7 +94,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 1 }}
-            className="text-base sm:text-lg text-neutral-400 leading-relaxed max-w-xl mx-auto lg:mx-0"
+            className="text-base sm:text-lg text-neutral-300 leading-relaxed max-w-xl mx-auto lg:mx-0"
           >
             From startup structuring to global expansion — we help businesses
             navigate compliance, valuation, and funding, all under one strategic
@@ -99,13 +105,13 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.6 }}
-            className="mt-6 px-6 py-3 text-sm sm:text-base font-medium border border-white/80 rounded-lg bg-transparent hover:bg-white/10 transition-all duration-300"
+            className="mt-6 px-6 py-3 text-sm sm:text-base font-medium border border-white/80 rounded-lg bg-transparent hover:bg-white/10 transition-all duration-300 backdrop-blur-md"
           >
             Book a Free Call
           </motion.button>
         </div>
 
-        {/* 🧩 3D Section — Hidden on Mobile */}
+        {/* 🧩 3D Section — Desktop Only */}
         <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center relative">
           <Suspense fallback={<div className="text-white">Loading 3D...</div>}>
             <motion.div
@@ -128,7 +134,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="w-full flex items-center justify-center mt-4 sm:mt-8 mb-4"
+        className="relative z-[2] w-full flex items-center justify-center mt-4 sm:mt-8 mb-4"
       >
         <div className="relative flex w-[90%] sm:w-[80%] md:w-[70%] lg:w-[50%] flex-col items-center justify-center overflow-hidden">
           <Marquee pauseOnHover className="[--duration:20s] gap-10 sm:gap-8">
@@ -137,7 +143,7 @@ const HeroSection = () => {
                 key={index}
                 src={logo}
                 alt={`logo-${index}`}
-                className="h-8 w-38 mx-0 sm:mx-8 md:mx-8 lg:mx-8 sm:h-10 md:h-12 object-contain opacity-70 hover:opacity-100 transition duration-300"
+                className="h-8 sm:h-10 md:h-12 mx-4 sm:mx-6 md:mx-8 object-contain opacity-70 hover:opacity-100 transition duration-300"
               />
             ))}
           </Marquee>

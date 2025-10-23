@@ -31,6 +31,28 @@ const StatCard = memo(({ value, label }) => (
     <div className="text-sm text-gray-400 font-medium">{label}</div>
   </div>
 ));
+const SplinePopIn = () => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 50 }}
+      animate={
+        loaded
+          ? { opacity: 0.4, scale: 1, y: 0, transition: { duration: 1, ease: "easeOut" } }
+          : { opacity: 0, scale: 0.8 }
+      }
+      className="w-full h-full flex items-center justify-center"
+    >
+      <Spline
+        scene="https://prod.spline.design/P0iJMYCbFwHDMHfc/scene.splinecode"
+        onLoad={() => setLoaded(true)} // 👈 triggers animation
+        style={{ width: "100%", height: "100%" }}
+      />
+    </motion.div>
+  );
+};
+
 
 // Testimonial card
 const TestimonialCard = memo(() => (
@@ -218,12 +240,9 @@ const ContactPage = () => {
 
       {/* Spline Background */}
       {showSpline && (
-        <div className="absolute bottom-72 inset-0 z-0 flex items-center justify-center pointer-events-none opacity-30">
+        <div className="absolute bottom-72 inset-0 z-0 flex items-center justify-center pointer-events-none">
           <Suspense fallback={null}>
-            <Spline
-              scene="https://prod.spline.design/P0iJMYCbFwHDMHfc/scene.splinecode"
-              style={{ width: "100%", height: "100%" }}
-            />
+            <SplinePopIn />
           </Suspense>
         </div>
       )}
